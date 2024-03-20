@@ -2,7 +2,25 @@
 
 use function Livewire\Volt\{state};
 
-//
+use Livewire\Volt\Component;
+
+new class extends Component {
+    public $links = [];
+
+    public function mount(){
+        $this->links = [
+            [
+                'id' => 1,
+                'name' => 'Utilisateurs',
+                'link' => url('/utilisateurs'),
+                'icon' => '
+                    <svg id="SvgjsSvg1069" width="22" height="22" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs"><defs id="SvgjsDefs1070"></defs><g id="SvgjsG1071"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 20" width="22" height="22"><g fill="none" fill-rule="evenodd" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" transform="translate(1 1)" class="colorStroke000 svgStroke"><path d="M16 18v-2a4 4 0 0 0-4-4H4a4 4 0 0 0-4 4v2" fill="#000000" class="color000 svgShape"></path><circle cx="8" cy="4" r="4" fill="#000000" class="color000 svgShape"></circle><path d="M22 18v-2a4 4 0 0 0-3-3.87M15 .13a4 4 0 0 1 0 7.75" fill="#000000" class="color000 svgShape"></path></g></svg></g></svg>
+                ',
+                'route_name' => 'admin.users.index',
+            ]
+        ];
+    }
+}
 
 ?>
 
@@ -10,27 +28,38 @@ use function Livewire\Volt\{state};
     <!-- Desktop sidebar -->
     <aside class="z-20 hidden w-64 overflow-y-auto bg-slate-950 text-gray-50 dark:bg-gray-800 md:block flex-shrink-0">
         <div class="py-4 text-gray-500 dark:text-gray-400">
-            <a class="ml-6 text-lg font-bold text-gray-50 dark:text-gray-200 flex items-center justify-center" href="{{route('dashboard')}}">
+            <a class="ml-6 text-lg font-bold text-gray-50 dark:text-gray-200 flex items-center justify-center" href="{{route('dashboard')}}" wire:navigate>
                 Dashboard
             </a>
             <ul class="mt-6">
                 <li class="relative px-6 py-3">
-                    <span class="absolute inset-y-0 left-0 w-1 bg-gray-50 rounded-tr-lg rounded-br-lg"
-                        aria-hidden="true"></span>
+                    @if (Route::currentRouteName() == 'dashboard')
+                        <span class="absolute inset-y-0 left-0 w-1 bg-gray-50 rounded-tr-lg rounded-br-lg"aria-hidden="true"></span>
+                    @endif
                     <a class="inline-flex items-center w-full text-sm font-semibold text-gray-50 transition-colors duration-150 hover:text-gray-100 dark:hover:text-gray-200 dark:text-gray-100"
-                        href="index.html">
-                        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                            <path
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
-                            </path>
-                        </svg>
+                        href="{{route('dashboard')}}"
+                        wire:navigate
+                        >
+                        <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"  stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"> <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                         <span class="ml-4">Dashboard</span>
                     </a>
                 </li>
             </ul>
             <ul>
+                @foreach ($links as $link)
+                    <li class="relative px-6 py-3" wire:key="{{ $link['id'] }}">
+                        @if (Route::currentRouteName() == $link['route_name'])
+                            <span class="absolute inset-y-0 left-0 w-1 bg-gray-50 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                        @endif
 
+                        <a class="hover:scale-x-105 inline-flex items-center w-full text-sm font-semibold text-gray-50 transition-colors ease-in-out duration-150 hover:text-gray-100 dark:hover:text-gray-200 dark:text-gray-100"
+                            href="{{$link['link']}}"
+                            wire:navigate >
+                            {!! $link['icon'] !!}
+                            <span class="ml-4">{{ $link['name'] }}</span>
+                        </a>
+                    </li>
+                @endforeach
                 <li class="relative px-6 py-3">
                     <button class="text-gray-50 inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-100 dark:hover:text-gray-200"
                         @click="togglePagesMenu" aria-haspopup="true">
@@ -104,14 +133,15 @@ use function Livewire\Volt\{state};
         x-transition:leave-end="opacity-0 transform -translate-x-20" @click.away="closeSideMenu"
         @keydown.escape="closeSideMenu">
         <div class="py-4 text-gray-50 dark:text-gray-400">
-            <a class="ml-6 text-lg font-bold text-gray-50 dark:text-gray-200 flex items-center justify-center" href="#">
+            <a class="ml-6 text-lg font-bold text-gray-50 dark:text-gray-200 flex items-center justify-center" href="{{route('dashboard')}}" wire:navigate>
                 Dashboard
             </a>
             <ul class="mt-6">
                 <li class="relative px-6 py-3">
                     <span class="absolute inset-y-0 left-0 w-1 bg-gray-50 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
                     <a class="inline-flex items-center w-full text-sm font-semibold text-gray-50 transition-colors duration-150 hover:text-gray-100 dark:hover:text-gray-200 dark:text-gray-100"
-                        href="index.html">
+                        href="{{route('dashboard')}}"
+                        wire:navigate >
                         <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke-linecap="round"
                             stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
                             <path
@@ -123,6 +153,20 @@ use function Livewire\Volt\{state};
                 </li>
             </ul>
             <ul>
+                @foreach ($links as $link)
+                    <li class="relative px-6 py-3" wire:key="{{ $link['id'] }}">
+                        @if (Route::currentRouteName() == $link['route_name'])
+                            <span class="absolute inset-y-0 left-0 w-1 bg-gray-50 rounded-tr-lg rounded-br-lg" aria-hidden="true"></span>
+                        @endif
+
+                        <a class="hover:scale-x-105 inline-flex items-center w-full text-sm font-semibold text-gray-50 transition-colors ease-in-out duration-150 hover:text-gray-100 dark:hover:text-gray-200 dark:text-gray-100"
+                            href="{{$link['link']}}"
+                            wire:navigate >
+                            {!! $link['icon'] !!}
+                            <span class="ml-4">{{ $link['name'] }}</span>
+                        </a>
+                    </li>
+                @endforeach
                 <li class="relative px-6 py-3">
                     <button class="text-gray-50 inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-100 dark:hover:text-gray-200"
                         @click="togglePagesMenu" aria-haspopup="true">
