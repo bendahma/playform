@@ -171,7 +171,7 @@
                     </ul>
                 </div>
             </header>
-            <main class="h-full overflow-y-auto">
+            <main class="h-full ">
                 {{ $slot }}
             </main>
         </div>
