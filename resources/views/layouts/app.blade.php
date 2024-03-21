@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
 </head>
 
 <body>
@@ -182,6 +184,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" ></script>
     <script src="{{asset('js/charts-lines.js') }}" ></script>
     <script src="{{ asset('js/charts-pie.js') }}" ></script>
+    <script src="{{asset('js/flowbite.min.js')}}"></script>
 </body>
 
 </html>
