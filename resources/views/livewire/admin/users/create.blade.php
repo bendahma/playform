@@ -36,7 +36,7 @@ class extends Component {
     public $confirmation_password = "password";
 
     #[Validate('required|string|string|max:255|same:password')]
-    public $confirmation_password = "password";
+    public $âctive = false;
 
     public function saveUser(){
 
