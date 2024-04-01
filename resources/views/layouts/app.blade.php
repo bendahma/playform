@@ -7,12 +7,14 @@
     <title>Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" />
+    <tallstackui:script />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
 </head>
 
 <body>
+    <x-toast />
     <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
         @livewire('partials.admin.sidebar')
         <div class="flex flex-col flex-1 w-full">

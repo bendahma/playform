@@ -4,14 +4,14 @@ namespace App\Livewire;
 
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
-use Rappasoft\LaravelLivewireTables\Views\Columns\ImageColumn ;
-use Rappasoft\LaravelLivewireTables\Views\Columns\DateColumn ;
-use Rappasoft\LaravelLivewireTables\Views\Columns\{ButtonGroupColumn, LinkColumn} ;
+use Rappasoft\LaravelLivewireTables\Views\Columns\{ButtonGroupColumn, LinkColumn, BooleanColumn, DateColumn, ImageColumn} ;
 use App\Models\User;
 
 class UsersTable extends DataTableComponent
 {
     protected $model = User::class;
+
+    protected $listeners = ['refreshUsersTable' => '$refresh'];
 
     public function configure(): void
     {
@@ -32,17 +32,13 @@ class UsersTable extends DataTableComponent
             }),
             Column::make("Name", "first_name")->sortable(),
             Column::make("Email", "email")->sortable(),
+            BooleanColumn::make('active'),
             DateColumn::make("Ajouter", "created_at")->outputFormat('d-m-Y'),
             Column::make('Actions')
                 ->label(
-                    fn ($row, Column $column) => view('livewire.partials.admin.actions-livewire-table')->with(
-                        [
-                            'viewUser' => route('admin.users.show', $row),
-                            'editUser' => route('admin.users.edit', $row),
-                            'disableUser' => route('admin.users.disable', $row),
-                            'deleteUser' => route('admin.users.delete', $row),
-                        ]
-                    )
+                    fn ($row) => view('partials.admin.table-actions')->with([
+                        'user' => $row,
+                    ])
                 )->html(),
 
         ];
